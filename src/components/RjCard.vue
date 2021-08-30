@@ -1,11 +1,12 @@
 <template>
-  <div class="card" :class="{border}">
+  <div class="rj-card" :class="{border}">
     <slot></slot>
   </div>
 </template>
 
 <script>
 export default {
+  name: 'RjCard',
   props: {
     border: {
       type: Boolean,
@@ -17,7 +18,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.card {
+.rj-card {
   font-size: 13px;
   padding: 12px;
   color: @c_regular_a;
