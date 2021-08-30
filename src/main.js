@@ -1,18 +1,17 @@
 import Vue from 'vue';
-import wxConfig from '@/utils/wxConfig';
-import App from './App.vue';
+import wxInvoke from '@/utils/wxInvoke';
+import router from '@/router';
+import store from './store';
+import App from '@/App.vue';
+import '@/element';
+import '@/main.less';
 
-wxConfig().then(() => {
-  console.log('ok');
-  window.wx.invoke('getContext', {}, res => {
-    console.log(res);
-  });
-}).catch(err => {
-  console.error(err);
-});
-
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+Vue.prototype.$wxInvoke = wxInvoke;
+Vue.prototype.$wx = window.wx;
 
 new Vue({
+  store,
+  router,
   render: h => h(App),
 }).$mount('#app')
