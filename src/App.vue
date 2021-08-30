@@ -7,7 +7,7 @@
 <style>
 #app {
   width: 360px;
-  min-height: 800px;
+  min-height: 640px;
   background-color: #fff;
   margin: 0 auto;
 }

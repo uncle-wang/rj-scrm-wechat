@@ -122,7 +122,7 @@ export default {
 .customer-content {
   flex: 1;
   color: @c_regular_a;
-  font-size: 13px;
+  font-size: 12px;
   margin-left: 10px;
 }
 .text-wechat {

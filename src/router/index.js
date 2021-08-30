@@ -4,6 +4,7 @@ import home from '@/views/home.vue';
 import push from '@/views/push.vue';
 import words from '@/views/words.vue';
 import welcome from '@/views/welcome.vue';
+import data from '@/views/data.vue';
 // import initWx from './initWx';
 
 Vue.use(VueRouter);
@@ -24,6 +25,10 @@ const routes = [
   {
     path: '/welcome',
     component: welcome,
+  },
+  {
+    path: '/data',
+    component: data,
   },
 ];
 
