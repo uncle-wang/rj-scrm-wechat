@@ -4,7 +4,9 @@
       <el-table-column label="【客户数据查看】" prop="label" label-class-name="indent"></el-table-column>
       <el-table-column label="2021-08-17" prop="content"></el-table-column>
     </el-table>
-    <el-button type="primary" plain>其他数据</el-button>
+    <div class="func-btn">
+      <el-button type="primary" plain>其他数据</el-button>
+    </div>
   </div>
 </template>
 
@@ -38,7 +40,8 @@ export default {
 /deep/ .indent {
   text-indent: -3px;
 }
-.el-button {
+.func-btn {
   margin-top: 12px;
+  text-align: right;
 }
 </style>
