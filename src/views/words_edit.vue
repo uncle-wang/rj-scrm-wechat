@@ -19,7 +19,7 @@
           <el-input placeholder="请输入" v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="话术内容:" prop="contents">
-          <rj-message-input v-model="form.contents" @input="checkMessage"></rj-message-input>
+          <rj-message-input :single-text="false" v-model="form.contents" @input="checkMessage" />
         </el-form-item>
         <el-form-item label-width="0" class="form-btns">
           <el-button type="primary" native-type="submit">确认</el-button>

@@ -457,6 +457,7 @@ export default {
 }
 /deep/ .el-link {
   display: block;
+  font-size: 13px;
 }
 .func-btns {
   display: flex;
