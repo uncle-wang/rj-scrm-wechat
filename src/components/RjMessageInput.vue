@@ -149,6 +149,7 @@
     <rj-dialog v-if="miniappFormShow" title="添加小程序" @close="miniappFormShow=false">
       <el-form
         :model="miniappForm"
+        :rules="miniappRules"
         size="medium"
         ref="miniappForm"
         @submit.native.prevent="addMiniapp"
@@ -192,6 +193,8 @@
 <script>
 import { MSGTYPE } from '@/constants';
 import chooseFile from '@/utils/chooseFile';
+import chooseImage from '@/utils/chooseImage';
+
 export default {
   name: 'RjMessageInput',
   props: {
@@ -235,6 +238,12 @@ export default {
         appid: '',
         page: '',
         pic_url: '',
+      },
+      miniappRules: {
+        title: [{ required: true, message: '请输入标题' }],
+        appid: [{ required: true, message: '请输入小程序appid' }],
+        page: [{ required: true, message: '请输入小程序路径' }],
+        pic_url: [{ required: true, message: '请添加小程序封面' }],
       },
     };
   },
@@ -303,15 +312,15 @@ export default {
       });
     },
     selectImage() {
-      chooseFile(file => {
+      chooseImage((file) => {
         this.$emit('input', [...this.value, {
           msgtype: MSGTYPE.IMAGE,
           image: { name: file.name, pic_url: window.URL.createObjectURL(file) },
         }]);
-      }, 'image/*');
+      });
     },
     selectFile() {
-      chooseFile(file => {
+      chooseFile((file) => {
         this.$emit('input', [...this.value, {
           msgtype: MSGTYPE.FILE,
           file: { name: file.name, url: window.URL.createObjectURL(file) },
