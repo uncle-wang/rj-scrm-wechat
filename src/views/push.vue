@@ -34,10 +34,7 @@
 
 <script>
 import { WECHATPAGE } from '@/constants';
-import RjCard from '@/components/RjCard.vue';
-import RjTitle from '@/components/RjTitle.vue';
 export default {
-  components: { RjCard, RjTitle },
   data() {
     return {
       customers: [{}, {}],
