@@ -191,7 +191,7 @@
 
 <script>
 import { MSGTYPE } from '@/constants';
-
+import chooseFile from '@/utils/chooseFile';
 export default {
   name: 'RjMessageInput',
   props: {
@@ -303,33 +303,20 @@ export default {
       });
     },
     selectImage() {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = 'image/*';
-      fileInput.click();
-      fileInput.onchange = () => {
-        if (fileInput.files && fileInput.files[0]) {
-          const file = fileInput.files[0];
-          this.$emit('input', [...this.value, {
-            msgtype: MSGTYPE.IMAGE,
-            image: { name: file.name, pic_url: window.URL.createObjectURL(file) },
-          }]);
-        }
-      };
+      chooseFile(file => {
+        this.$emit('input', [...this.value, {
+          msgtype: MSGTYPE.IMAGE,
+          image: { name: file.name, pic_url: window.URL.createObjectURL(file) },
+        }]);
+      }, 'image/*');
     },
     selectFile() {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.click();
-      fileInput.onchange = () => {
-        if (fileInput.files && fileInput.files[0]) {
-          const file = fileInput.files[0];
-          this.$emit('input', [...this.value, {
-            msgtype: MSGTYPE.FILE,
-            file: { name: file.name, url: window.URL.createObjectURL(file) },
-          }]);
-        }
-      };
+      chooseFile(file => {
+        this.$emit('input', [...this.value, {
+          msgtype: MSGTYPE.FILE,
+          file: { name: file.name, url: window.URL.createObjectURL(file) },
+        }]);
+      });
     },
     removeItem(item) {
       this.$emit('input', this.value.filter((c) => c !== item));

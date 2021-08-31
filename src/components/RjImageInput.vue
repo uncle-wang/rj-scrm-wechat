@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import chooseFile from '@/utils/chooseFile';
 export default {
   name: 'RjImageInput',
   props: {
@@ -20,16 +21,9 @@ export default {
   },
   methods: {
     chooseImage() {
-      const fileInput = document.createElement('input');
-      fileInput.type = 'file';
-      fileInput.accept = 'image/*';
-      fileInput.click();
-      fileInput.onchange = () => {
-        if (fileInput.files && fileInput.files[0]) {
-          const file = fileInput.files[0];
-          this.$emit('input', window.URL.createObjectURL(file));
-        }
-      };
+      chooseFile(file => {
+        this.$emit('input', window.URL.createObjectURL(file));
+      }, 'image/*');
     },
   },
 };
