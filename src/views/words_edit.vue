@@ -19,7 +19,7 @@
           <el-input placeholder="请输入" v-model="form.title"></el-input>
         </el-form-item>
         <el-form-item label="话术内容:" prop="contents">
-          <rj-message-input v-model="form.contents"></rj-message-input>
+          <rj-message-input v-model="form.contents" @input="checkMessage"></rj-message-input>
         </el-form-item>
         <el-form-item label-width="0" class="form-btns">
           <el-button type="primary" native-type="submit">确认</el-button>
@@ -52,6 +52,9 @@ export default {
     };
   },
   methods: {
+    checkMessage() {
+      this.$refs.form.validateField('contents');
+    },
     submit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {

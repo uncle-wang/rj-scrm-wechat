@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import home from '@/views/home.vue';
 import push from '@/views/push.vue';
+import notification from '@/views/notification.vue';
 import words from '@/views/words.vue';
 import words_edit from '@/views/words_edit.vue';
 import welcome from '@/views/welcome.vue';
@@ -18,6 +19,10 @@ const routes = [
   {
     path: '/push',
     component: push,
+  },
+  {
+    path: '/notification',
+    component: notification,
   },
   {
     path: '/words',

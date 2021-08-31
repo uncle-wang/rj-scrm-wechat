@@ -83,7 +83,12 @@
       </el-button>
     </div>
     <!-- 文字表单 -->
-    <rj-dialog v-if="textFormShow" title="添加文字内容" @close="textFormShow=false">
+    <rj-dialog
+      v-if="textFormShow"
+      title="添加文字内容"
+      @close="textFormShow=false"
+      class="dialog-text-form"
+    >
       <el-form
         :model="textForm"
         :rules="textRules"
@@ -102,13 +107,18 @@
           />
         </el-form-item>
         <el-form-item class="form-btns">
-          <el-button @click="textFormShow=false">取消</el-button>
-          <el-button type="primary" native-type="submit">确定</el-button>
+          <el-button size="small" @click="textFormShow=false">取消</el-button>
+          <el-button size="small" type="primary" native-type="submit">确定</el-button>
         </el-form-item>
       </el-form>
     </rj-dialog>
     <!-- 链接表单 -->
-    <rj-dialog v-if="linkFormShow" title="添加链接" @close="linkFormShow=false">
+    <rj-dialog
+      v-if="linkFormShow"
+      title="添加链接"
+      @close="linkFormShow=false"
+      class="dialog-link-form"
+    >
       <el-form
         :model="linkForm"
         :rules="linkRules"
@@ -140,13 +150,18 @@
           <rj-image-input v-model="linkForm.picurl"></rj-image-input>
         </el-form-item>
         <el-form-item class="form-btns">
-          <el-button @click="linkFormShow=false">取消</el-button>
-          <el-button type="primary" native-type="submit">确定</el-button>
+          <el-button size="small" @click="linkFormShow=false">取消</el-button>
+          <el-button size="small" type="primary" native-type="submit">确定</el-button>
         </el-form-item>
       </el-form>
     </rj-dialog>
     <!-- 小程序表单 -->
-    <rj-dialog v-if="miniappFormShow" title="添加小程序" @close="miniappFormShow=false">
+    <rj-dialog
+      v-if="miniappFormShow"
+      title="添加小程序"
+      @close="miniappFormShow=false"
+      class="dialog-miniprogram-form"
+    >
       <el-form
         :model="miniappForm"
         :rules="miniappRules"
@@ -167,7 +182,6 @@
             class="miniapp-input"
             placeholder="请输入"
             v-model="miniappForm.appid"
-            autofocus
           />
         </el-form-item>
         <el-form-item label="小程序路径" prop="page" required>
@@ -175,15 +189,14 @@
             class="miniapp-input"
             placeholder="请输入"
             v-model="miniappForm.page"
-            autofocus
           />
         </el-form-item>
         <el-form-item label="小程序封面" prop="pic_url" required>
-          <rj-image-input v-model="miniappForm.pic_url"></rj-image-input>
+          <rj-image-input v-model="miniappForm.pic_url" @input="checkImage"></rj-image-input>
         </el-form-item>
         <el-form-item class="form-btns">
-          <el-button @click="miniappFormShow=false">取消</el-button>
-          <el-button type="primary" native-type="submit">确定</el-button>
+          <el-button size="small" @click="miniappFormShow=false">取消</el-button>
+          <el-button size="small" type="primary" native-type="submit">确定</el-button>
         </el-form-item>
       </el-form>
     </rj-dialog>
@@ -255,7 +268,7 @@ export default {
       }
       this.textFormShow = true;
       this.$nextTick(() => {
-        this.$el.querySelector('.text-input textarea').focus();
+        document.querySelector('.dialog-text-form .text-input textarea').focus();
       });
     },
     addText() {
@@ -263,7 +276,7 @@ export default {
         if (!valid) {
           return;
         }
-        this.$emit('input', [...this.value, { msgtype: MSGTYPE.TEXT, text: this.textForm }]);
+        this.$emit('input', [...this.value, { msgtype: MSGTYPE.TEXT, text: { ...this.textForm } }]);
         this.textFormShow = false;
       });
     },
@@ -277,7 +290,7 @@ export default {
       }
       this.linkFormShow = true;
       this.$nextTick(() => {
-        this.$el.querySelector('.link-title input').focus();
+        document.querySelector('.dialog-link-form .link-title input').focus();
       });
     },
     addLink() {
@@ -285,7 +298,7 @@ export default {
         if (!valid) {
           return;
         }
-        this.$emit('input', [...this.value, { msgtype: MSGTYPE.LINK, link: this.linkForm }]);
+        this.$emit('input', [...this.value, { msgtype: MSGTYPE.LINK, link: { ...this.linkForm } }]);
         this.linkFormShow = false;
       });
     },
@@ -299,7 +312,7 @@ export default {
       }
       this.miniappFormShow = true;
       this.$nextTick(() => {
-        this.$el.querySelector('.miniapp-input input').focus();
+        document.querySelector('.dialog-miniprogram-form .miniapp-input input').focus();
       });
     },
     addMiniapp() {
@@ -307,9 +320,18 @@ export default {
         if (!valid) {
           return;
         }
-        this.$emit('input', [...this.value, { msgtype: MSGTYPE.MINIPROGRAM, miniprogram: this.miniappForm }]);
+        this.$emit('input', [
+          ...this.value,
+          {
+            msgtype: MSGTYPE.MINIPROGRAM,
+            miniprogram: { ...this.miniappForm },
+          },
+        ]);
         this.miniappFormShow = false;
       });
+    },
+    checkImage() {
+      this.$refs.miniappForm.validateField('pic_url');
     },
     selectImage() {
       chooseImage((file) => {

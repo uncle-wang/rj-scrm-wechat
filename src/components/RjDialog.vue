@@ -1,5 +1,5 @@
 <template>
-  <el-dialog class="rj-dialog" fullscreen visible :title="title" @close="$emit('close')">
+  <el-dialog class="rj-dialog" fullscreen visible append-to-body :title="title" @close="$emit('close')">
     <slot></slot>
   </el-dialog>
 </template>
