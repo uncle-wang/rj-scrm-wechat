@@ -1,8 +1,17 @@
 <template>
   <div class="rj-message-input">
-    <div class="content-wrap">
+    <div v-if="singleText" class="single-text-box">
+      <el-input
+        type="textarea"
+        resize="none"
+        :placeholder="placeholder"
+        :value="singleTextValue"
+        @input="emitSingleText"
+      />
+    </div>
+    <div class="rj-message-content-wrap">
       <div v-if="value.length<=0" class="content-empty">
-        点击下方按钮添加内容
+        点击下方按钮添加{{singleText?'附件':'内容'}}
       </div>
       <div v-else class="content-box">
         <div v-for="(item,index) in value" :key="index"  class="msg-item">
@@ -47,6 +56,7 @@
     </div>
     <div class="func-btns">
       <el-button
+        v-if="!singleText"
         type="primary"
         plain
         @click="showTextForm"
@@ -218,6 +228,16 @@ export default {
         return [];
       },
     },
+    singleText: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+    placeholder: {
+      type: String,
+      required: false,
+      default: '请输入文字',
+    },
   },
   data() {
     return {
@@ -260,7 +280,30 @@ export default {
       },
     };
   },
+  computed: {
+    singleTextValue() {
+      const firstItem = this.value[0];
+      if (firstItem && firstItem.msgtype === MSGTYPE.TEXT) {
+        return firstItem.text.content;
+      }
+      return '';
+    },
+  },
   methods: {
+    emitSingleText(v) {
+      const [firstItem, ...others] = this.value;
+      if (firstItem && firstItem.msgtype === MSGTYPE.TEXT) {
+        this.$emit('input', v ? [
+          { msgtype: MSGTYPE.TEXT, text: { content: v } },
+          ...others,
+        ] : [...others]);
+      } else {
+        this.$emit('input', v ? [
+          { msgtype: MSGTYPE.TEXT, text: { content: v } },
+          ...this.value,
+        ] : [...this.value]);
+      }
+    },
     showTextForm() {
       this.textForm.content = '';
       if (this.$refs.textForm) {
@@ -356,9 +399,21 @@ export default {
 };
 </script>
 
+<style lang="less">
+.rj-message-content-wrap {
+  color: @c_border_input;
+}
+.is-error .rj-message-content-wrap {
+  border-color: @c_error;
+}
+</style>
 <style scoped lang="less">
-.content-wrap {
-  border: 1px solid #DCDFE6;
+.single-text-box {
+  margin-bottom: 8px;
+}
+.rj-message-content-wrap {
+  border-width: 1px;
+  border-style: solid;
   border-radius: 4px;
   height: 140px;
 }

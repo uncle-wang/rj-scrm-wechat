@@ -30,6 +30,14 @@ export default {
 };
 </script>
 
+<style lang="less">
+.rj-image-empty {
+  border-color: @c_border_input;
+}
+.is-error .rj-image-empty {
+  border-color: @c_error;
+}
+</style>
 <style scoped lang="less">
 .rj-image-input {
   width: 100%;
@@ -45,7 +53,8 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid @c_border_input;
+  border-width: 1px;
+  border-style: solid;
   font-size: 32px;
   border-radius: 4px;
   color: @c_regular_b;
