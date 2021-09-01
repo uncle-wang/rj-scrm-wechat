@@ -5,6 +5,7 @@ import RjTitle from './RjTitle.vue';
 import RjCard from './RjCard.vue';
 import RjImageInput from './RjImageInput';
 import RjMessageInput from './RjMessageInput.vue';
+import RjMessagePreview from './RjMessagePreview.vue';
 
 Vue.component(RjDialog.name, RjDialog);
 Vue.component(RjHeader.name, RjHeader);
@@ -12,3 +13,4 @@ Vue.component(RjTitle.name, RjTitle);
 Vue.component(RjCard.name, RjCard);
 Vue.component(RjImageInput.name, RjImageInput);
 Vue.component(RjMessageInput.name, RjMessageInput);
+Vue.component(RjMessagePreview.name, RjMessagePreview);

@@ -8,12 +8,7 @@
       <i class="el-icon-message-solid primary-text"></i>
       管理员提醒你在<span class="primary-text">「2021-08-12 21:04」</span>给以下客户发送消息
     </rj-card>
-    <el-card header="推送内容">
-      <div v-for="(item,index) in pushes" :key="index" class="push-item">
-        <el-input value="测试推送内容" size="medium" readonly></el-input>
-        <el-button type="primary" plain>复制</el-button>
-      </div>
-    </el-card>
+    <rj-message-preview :contents="contents" title="推送内容"></rj-message-preview>
     <el-card header="选择客户进行任务跟进">
       <div v-for="(item,index) in customers" :key="index" class="customer-item">
         <div class="customer-box">
@@ -38,7 +33,32 @@ export default {
   data() {
     return {
       customers: [{}, {}],
-      pushes: [{}, {}],
+      contents: [
+        {
+          msgtype: 'text',
+          text: { content: '客户您好' },
+        },
+        {
+          msgtype: 'image',
+          image: { pic_url: 'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview_jpg/19367cbcf3b03cc253455b4208074d76.jpg' },
+        },
+        {
+          msgtype: 'link',
+          link: { title: '点击查看详情', url: 'https://www.baidu.com' },
+        },
+        {
+          msgtype: 'file',
+          file: { name: '工程规划.pdf' },
+        },
+        {
+          msgtype: 'miniprogram',
+          miniprogram: { title: '腾讯云助手' },
+        },
+        {
+          msgtype: 'image',
+          image: { pic_url: 'https://img0.baidu.com/it/u=3237371273,3131709842&fm=26&fmt=auto&gp=0.jpg' },
+        },
+      ],
     };
   },
   methods: {
@@ -79,18 +99,11 @@ export default {
   position: relative;
   top: 1px;
 }
-.push-item {
-  display: flex;
-  align-items: center;
-  &+.push-item {
-    margin-top: 12px;
-  }
-  .el-input {
-    flex: 1;
-  }
-  .el-button {
-    margin-left: 12px;
-  }
+.rj-message-preview {
+  width: 300px;
+  height: 468px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .customer-item {
   display: flex;
