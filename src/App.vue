@@ -12,3 +12,11 @@
   margin: 0 auto;
 }
 </style>
+
+<script>
+export default {
+  mounted() {
+    this.$el.style.minHeight = window.innerHeight + 'px';
+  },
+};
+</script>
