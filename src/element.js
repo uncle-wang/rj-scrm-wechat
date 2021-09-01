@@ -11,6 +11,9 @@ import {
   Table,
   TableColumn,
   Dialog,
+  Tabs,
+  TabPane,
+  Tree,
 } from 'element-ui';
 
 Vue.prototype.$ELEMENT = { size: 'mini' };
@@ -25,3 +28,6 @@ Vue.use(FormItem);
 Vue.use(Table);
 Vue.use(TableColumn);
 Vue.use(Dialog);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Tree);

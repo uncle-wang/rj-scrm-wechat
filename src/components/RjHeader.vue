@@ -22,10 +22,11 @@ export default {
 
 <style scoped lang="less">
 .rj-header {
+  height: 54px;
   display: flex;
   align-items: center;
   box-shadow: 0px 0px 3px #dadada;
-  padding: 10px 12px;
+  padding: 0 12px;
   justify-content: space-between;
 }
 .rj-header-title {

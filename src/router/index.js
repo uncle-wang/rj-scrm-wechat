@@ -6,7 +6,9 @@ import notification from '@/views/notification.vue';
 import words from '@/views/words.vue';
 import words_edit from '@/views/words_edit.vue';
 import welcome from '@/views/welcome.vue';
+import welcome_edit from '@/views/welcome_edit.vue';
 import data from '@/views/data.vue';
+import { WORDSTYPE } from '@/constants';
 // import initWx from './initWx';
 
 Vue.use(VueRouter);
@@ -26,7 +28,17 @@ const routes = [
   },
   {
     path: '/words',
+    redirect: `/words_${WORDSTYPE.BUSINESS}`,
+  },
+  {
+    path: `/words_${WORDSTYPE.BUSINESS}`,
     component: words,
+    props: { type: WORDSTYPE.BUSINESS },
+  },
+  {
+    path: `/words_${WORDSTYPE.PERSONAL}`,
+    component: words,
+    props: { type: WORDSTYPE.PERSONAL },
   },
   {
     path: '/words_edit',
@@ -37,6 +49,10 @@ const routes = [
     component: welcome,
   },
   {
+    path: '/welcome_edit',
+    component: welcome_edit,
+  },
+  {
     path: '/data',
     component: data,
   },
@@ -44,6 +60,12 @@ const routes = [
 
 const router = new VueRouter({
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition;
+    }
+    return { x: 0, y: 0 };
+  },
 });
 
 // router.beforeEach(initWx);

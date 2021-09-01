@@ -13,3 +13,8 @@ export const MSGTYPE = {
   FILE: 'file',
   MINIPROGRAM: 'miniprogram',
 };
+
+export const WORDSTYPE = {
+  BUSINESS: 'business',
+  PERSONAL: 'personal',
+};

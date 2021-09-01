@@ -7,7 +7,7 @@
       </div>
     </rj-header>
     <div class="page-push">
-      <rj-message-preview title="信息预览" :contents="contents"></rj-message-preview>
+      <rj-message-preview title="内容预览" :contents="contents"></rj-message-preview>
       <div class="func-btn">
         <el-button type="primary">立即推送</el-button>
       </div>
@@ -66,5 +66,8 @@ export default {
 .func-btn {
   text-align: center;
   margin-top: 18px;
+  .el-button {
+    width: 100px;
+  }
 }
 </style>
