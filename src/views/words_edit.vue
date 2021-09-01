@@ -1,6 +1,6 @@
 <template>
   <div>
-    <rj-header>新建话术</rj-header>
+    <rj-header show-back>新建话术</rj-header>
     <div class="page-words-edit">
       <el-form
         :model="form"

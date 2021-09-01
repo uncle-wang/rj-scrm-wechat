@@ -1,11 +1,14 @@
 <template>
-  <div class="page-data">
-    <el-table :data="data" border>
-      <el-table-column label="【客户数据查看】" prop="label" label-class-name="indent"></el-table-column>
-      <el-table-column label="2021-08-17" prop="content"></el-table-column>
-    </el-table>
-    <div class="func-btn">
-      <el-button type="primary" plain>其他数据</el-button>
+  <div>
+    <rj-header>查看数据</rj-header>
+    <div class="page-data">
+      <el-table :data="data" border>
+        <el-table-column label="【客户数据查看】" prop="label" label-class-name="indent"></el-table-column>
+        <el-table-column label="2021-08-17" prop="content"></el-table-column>
+      </el-table>
+      <div class="func-btn">
+        <el-button type="primary" plain>其他数据</el-button>
+      </div>
     </div>
   </div>
 </template>

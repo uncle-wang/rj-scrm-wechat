@@ -3,13 +3,20 @@
     <div class="rj-header-title">
       <slot></slot>
     </div>
-    <el-button type="primary" plain @click="$router.back()">返回</el-button>
+    <el-button v-if="showBack" type="primary" plain @click="$router.back()">返回</el-button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'RjHeader'
+  name: 'RjHeader',
+  props: {
+    showBack: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+  },
 };
 </script>
 
@@ -22,6 +29,7 @@ export default {
   justify-content: space-between;
 }
 .rj-header-title {
+  flex: 1;
   font-size: 14px;
   color: @c_regular_a;
 }

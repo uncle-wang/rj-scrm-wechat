@@ -28,7 +28,6 @@
 </template>
 
 <script>
-import { WECHATPAGE } from '@/constants';
 export default {
   data() {
     return {
@@ -70,16 +69,6 @@ export default {
         console.error(err);
       });
     },
-  },
-  created() {
-    if (this.$store.state.entry !== WECHATPAGE.SINGLECHAT) {
-      return;
-    }
-    this.$wxInvoke('getCurExternalContact').then(res => {
-      console.log(res);
-    }).catch(err => {
-      console.error(err);
-    });
   },
 };
 </script>
