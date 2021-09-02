@@ -1,7 +1,7 @@
 <template>
   <div class="page-notification">
     <rj-card border>
-      管理员刘雨辰创建了个人SOP任务，提醒你给已添加企业微信00时05分的新客户发送消息
+      管理员刘雨辰创建了推送任务，提醒你给已添加企业微信00时05分的新客户发送消息
     </rj-card>
     <rj-title>推送详情</rj-title>
     <rj-card>
@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-        <el-button type="primary" plain @click="test">跟进</el-button>
+        <el-button type="primary" plain @click="openUserProfile">跟进</el-button>
       </div>
     </el-card>
     <div class="no-more">没有更多用户了～</div>
@@ -51,7 +51,12 @@ export default {
         },
         {
           msgtype: 'miniprogram',
-          miniprogram: { title: '腾讯云助手' },
+          miniprogram: {
+            appid: 'wx8bd80126147df384',
+            title: '腾讯云助手',
+            imgUrl: 'https://search-operate.cdn.bcebos.com/d054b8892a7ab572cb296d62ec7f97b6.png',
+            page: '/index/page.html',
+          },
         },
         {
           msgtype: 'image',
@@ -61,7 +66,7 @@ export default {
     };
   },
   methods: {
-    test() {
+    openUserProfile() {
       this.$wxInvoke('openUserProfile', {
         type: 2,
         userid: 'wmah6MDAAApKcwOT7iRT78qFTDusKbQg',

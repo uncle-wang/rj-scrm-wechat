@@ -9,13 +9,15 @@
     <div class="page-push">
       <rj-message-preview title="内容预览" :contents="contents"></rj-message-preview>
       <div class="func-btn">
-        <el-button type="primary">立即推送</el-button>
+        <el-button type="primary" @click="sendMessage">立即推送</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { MSGTYPE } from '@/constants';
+
 export default {
   data() {
     return {
@@ -29,6 +31,10 @@ export default {
           image: { pic_url: 'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview_jpg/19367cbcf3b03cc253455b4208074d76.jpg' },
         },
         {
+          msgtype: 'text',
+          text: { content: '客户您好2' },
+        },
+        {
           msgtype: 'link',
           link: { title: '点击查看详情', url: 'https://www.baidu.com' },
         },
@@ -38,7 +44,12 @@ export default {
         },
         {
           msgtype: 'miniprogram',
-          miniprogram: { title: '腾讯云助手' },
+          miniprogram: {
+            appid: 'wx8bd80126147df384',
+            title: '腾讯云助手',
+            imgUrl: 'https://search-operate.cdn.bcebos.com/d054b8892a7ab572cb296d62ec7f97b6.png',
+            page: '/index/page.html',
+          },
         },
         {
           msgtype: 'image',
@@ -46,6 +57,17 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    sendMessage() {
+      this.contents.filter((item) => item.msgtype === MSGTYPE.TEXT).forEach((item) => {
+        this.$wxInvoke('sendChatMessage', { ...item, text: { content: item.text.content + '\n' } }).then(() => {
+          console.log('send ok');
+        }).catch((err) => {
+          console.error(err);
+        });
+      });
+    },
   },
 };
 </script>

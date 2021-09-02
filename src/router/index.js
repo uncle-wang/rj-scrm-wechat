@@ -5,6 +5,7 @@ import push from '@/views/push.vue';
 import notification from '@/views/notification.vue';
 import words from '@/views/words.vue';
 import words_edit from '@/views/words_edit.vue';
+import words_group_edit from '@/views/words_group_edit.vue';
 import welcome from '@/views/welcome.vue';
 import welcome_edit from '@/views/welcome_edit.vue';
 import data from '@/views/data.vue';
@@ -43,6 +44,10 @@ const routes = [
   {
     path: '/words_edit',
     component: words_edit,
+  },
+  {
+    path: '/words_group_edit',
+    component: words_group_edit,
   },
   {
     path: '/welcome',

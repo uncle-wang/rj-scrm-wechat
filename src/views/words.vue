@@ -38,8 +38,8 @@
           <el-button v-if="!data.children" type="primary" plain @click="sendMessage(data)">发送</el-button>
         </div>
       </el-tree>
-      <div class="group-btn">
-        <el-button type="primary" icon="el-icon-plus">新建分组</el-button>
+      <div class="group-btn" v-if="type===WORDSTYPE.PERSONAL">
+        <el-button type="primary" icon="el-icon-plus" @click="$router.push('words_group_edit')">新建分组</el-button>
       </div>
     </div>
   </div>
@@ -146,6 +146,9 @@ export default {
 }
 .page-words {
   padding: 18px 12px 108px;
+}
+/deep/ .el-tree-node__content {
+  height: 38px;
 }
 /deep/ .el-tree-node__expand-icon {
   font-size: 16px;

@@ -7,6 +7,7 @@ const AGENTID = '1000004';
 const SECRET = '5mqhNGn0Fa4gtDXticaiKMhT04lU0ez9j8vfrHYtuK8';
 const APILIST = [
   'getContext',
+  'sendChatMessage',
 ];
 
 let configed = false;
