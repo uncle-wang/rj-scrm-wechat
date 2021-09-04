@@ -9,10 +9,11 @@
         label-width="84px"
         size="small"
         @submit.prevent.native="submit"
+        v-loading="loading"
       >
         <el-form-item label="分组:" prop="group">
           <el-select placeholder="选择分组" v-model="form.group">
-            <el-option label="aaa" value="aaa"></el-option>
+            <el-option v-for="g in groups" :key="g.id" :label="g.groupName" :value="g.id"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="标题:" prop="title">
@@ -33,6 +34,8 @@
 export default {
   data() {
     return {
+      loading: false,
+      groups: [],
       form: {
         group: null,
         title: null,
@@ -63,6 +66,21 @@ export default {
         console.log('提交');
       });
     },
+    getGroups() {
+      return this.$request({
+        url: '/verbal/trick/group/list'
+      });
+    },
+  },
+  created() {
+    this.loading = true;
+    this.getGroups().then((data) => {
+      this.loading = false;
+      this.groups = data;
+    }).catch((err) => {
+      this.loading = false;
+      console.error(err);
+    });
   },
 };
 </script>

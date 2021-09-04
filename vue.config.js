@@ -15,7 +15,12 @@ module.exports = {
       '/cgi-bin': {
         target: 'https://qyapi.weixin.qq.com',
         changeOrigin: true
-      }
+      },
+      '/api': {
+        target: 'http://1.117.196.125:9500',
+        changeOrigin: true,
+        pathRewrite: { '^/api': '/' },
+      },
     }
   }
 };

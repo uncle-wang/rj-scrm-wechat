@@ -32,6 +32,7 @@
         icon-class="el-icon-s-unfold"
         :data="wordsGroups"
         :filter-node-method="filterNode"
+        v-loading="loading"
       >
         <div class="custom-tree-node" slot-scope="{ node, data }">
           <span>{{node.label}}</span>
@@ -58,6 +59,7 @@ export default {
   data() {
     return {
       WORDSTYPE,
+      loading: false,
       searchForm: { keywords: '' },
       wordsGroups: [
         {
@@ -119,6 +121,21 @@ export default {
     sendMessage(data) {
       console.log(data);
     },
+    getWords() {
+      return this.$request({
+        url: '/verbal/trick/team/list'
+      });
+    },
+  },
+  created() {
+    this.loading = true;
+    this.getWords().then((data) => {
+      this.loading = false;
+      console.log(data);
+    }).catch((err) => {
+      this.loading = false;
+      console.error(err);
+    });
   },
 };
 </script>
