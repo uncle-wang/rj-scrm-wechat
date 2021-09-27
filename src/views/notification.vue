@@ -30,6 +30,7 @@
 <script>
 import getParam from '@/utils/getParam';
 import { MSGTYPE } from '@/constants';
+import { getTaskDetail, getTaskRule } from '@/api/common';
 
 export default {
   data() {
@@ -78,14 +79,7 @@ export default {
     const taskId = getParam('task_id');
     if (!taskId) return;
     const loading = this.$loading();
-    const p1 = this.$request({
-      method: 'POST',
-      url: `/api/task/info/${taskId}`
-    });
-    const p2 = this.$request({
-      url: `/api/task/rule/${taskId}`
-    });
-    Promise.all([p1, p2]).then(([tasks, ruleInfo]) => {
+    Promise.all([getTaskDetail(taskId), getTaskRule(taskId)]).then(([tasks, ruleInfo]) => {
       this.tasks = tasks;
       this.ruleInfo.taskName = ruleInfo.taskName;
       this.ruleInfo.triggerCondition = ruleInfo.triggerCondition;

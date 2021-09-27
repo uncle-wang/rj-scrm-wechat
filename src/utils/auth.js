@@ -1,5 +1,5 @@
 import store from '@/store';
-import request from './request';
+import { login } from '@/api/common';
 import getParam from './getParam';
 
 /*
@@ -37,10 +37,7 @@ export default (callback) => {
     const code = getParam('code');
     if (code) {
       // 获取token
-      request({
-        url: '/auth/h5/login/oauth/userinfo',
-        params: { code },
-      }).then((res) => {
+      login(code).then((res) => {
         window.sessionStorage.token = res.token;
         doCallback(callback);
       }).catch((err) => {

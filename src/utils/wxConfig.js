@@ -2,9 +2,14 @@ import sha1 from 'crypto-js/sha1';
 import { v4 as uuid } from 'uuid';
 import request from './request';
 
-const WECHATID = 'ww851e9d2540b5ed3c';
-const AGENTID = '1000004';
-const SECRET = '5mqhNGn0Fa4gtDXticaiKMhT04lU0ez9j8vfrHYtuK8';
+// 自己的
+// const WECHATID = 'ww851e9d2540b5ed3c';
+// const AGENTID = '1000004';
+// const SECRET = '5mqhNGn0Fa4gtDXticaiKMhT04lU0ez9j8vfrHYtuK8';
+// 如家的
+const WECHATID = 'wx6a1abf70a2b1f203';
+const AGENTID = '1000011';
+const SECRET = 'pp7Kt0Erxt5rTZ_2jevphjy0HKtmPd-77Dp2TGxKUqo';
 const APILIST = [
   'getContext',
   'sendChatMessage',
@@ -63,6 +68,7 @@ const getToken = async () => {
   }
   const res = await request({
     url: '/cgi-bin/gettoken',
+    baseURL: '/',
     params: {
       corpid: WECHATID,
       corpsecret: SECRET,
@@ -89,6 +95,7 @@ const getTicket = async () => {
   const token = await getToken();
   const res = await request({
     url: '/cgi-bin/get_jsapi_ticket',
+    baseURL: '/',
     params: {
       access_token: token,
     },
@@ -114,6 +121,7 @@ const getAppTicket = async () => {
   const token = await getToken();
   const res = await request({
     url: '/cgi-bin/ticket/get',
+    baseURL: '/',
     params: {
       access_token: token,
       type: 'agent_config',

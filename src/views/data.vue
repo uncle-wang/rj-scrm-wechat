@@ -15,6 +15,7 @@
 
 <script>
 import moment from 'moment';
+import { getStatistics } from '@/api/common';
 
 export default {
   data() {
@@ -38,9 +39,7 @@ export default {
     },
   },
   created() {
-    this.$request({
-      url: '/api/coustomer/statistics/today/statistics',
-    }).then((data) => {
+    getStatistics().then((data) => {
       this.data.customerTotalNum = data.customerTotalNum;
       this.data.increaseNum = data.increaseNum;
       this.data.lostNum = data.lostNum;

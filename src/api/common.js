@@ -1,5 +1,36 @@
 import request from '@/utils/request';
 
+// 获取token
+export function login(code) {
+  // 获取token
+  return request({
+    url: '/auth/h5/login/oauth/userinfo',
+    params: { code },
+  });
+}
+
+// 获取客户数据
+export function getStatistics() {
+  return request({
+    url: '/api/coustomer/statistics/today/statistics',
+  });
+}
+
+// 获取推送任务详情
+export function getTaskDetail(taskId) {
+  return request({
+    method: 'POST',
+    url: `/api/task/info/${taskId}`
+  });
+}
+
+// 获取推送任务规则
+export function getTaskRule(taskId) {
+  return request({
+    url: `/api/task/rule/${taskId}`
+  });
+}
+
 // 上传文件
 export function uploadFile(fileType, file) {
   const fd = new FormData();
