@@ -33,6 +33,13 @@ export default {
       ],
     };
   },
+  created() {
+    this.$request({
+      url: '/api/coustomer/statistics/today/statistics',
+    }).then((data) => {
+      console.log(data);
+    }).catch(() => {});
+  },
 };
 </script>
 

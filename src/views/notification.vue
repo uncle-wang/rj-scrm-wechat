@@ -65,6 +65,8 @@ export default {
           image: { pic_url: 'https://img0.baidu.com/it/u=3237371273,3131709842&fm=26&fmt=auto&gp=0.jpg' },
         },
       ],
+      tasks: [],
+      ruleInfo: {},
     };
   },
   methods: {
@@ -79,14 +81,18 @@ export default {
   },
   created() {
     const taskId = getParam('task_id');
-    if (taskId) {
-      this.$request({
-        method: 'POST',
-        url: `/api/task/info/${taskId}`
-      }).then((data) => {
-        console.log(data);
-      }).catch(() => {});
-    }
+    if (!taskId) return;
+    const p1 = this.$request({
+      method: 'POST',
+      url: `/api/task/info/${taskId}`
+    });
+    const p2 = this.$request({
+      url: `/api/task/rule/${taskId}`
+    });
+    Promise.all([p1, p2]).then(([tasks, ruleInfo]) => {
+      this.tasks = tasks;
+      this.ruleInfo = ruleInfo;
+    }).catch(() => {});
   },
 };
 </script>
