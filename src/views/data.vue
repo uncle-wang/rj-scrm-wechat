@@ -2,9 +2,9 @@
   <div>
     <rj-header>查看数据</rj-header>
     <div class="page-data">
-      <el-table :data="data" border>
+      <el-table :data="tableData" border v-loading="loading">
         <el-table-column label="【客户数据查看】" prop="label" label-class-name="indent"></el-table-column>
-        <el-table-column label="2021-08-17" prop="content"></el-table-column>
+        <el-table-column :label="date" prop="content"></el-table-column>
       </el-table>
       <div class="func-btn">
         <el-button type="primary" plain>其他数据</el-button>
@@ -14,31 +14,40 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   data() {
     return {
-      data: [
-        {
-          label: '当日客户数',
-          content: '1000人',
-        },
-        {
-          label: '当日流失客户数',
-          content: '50人',
-        },
-        {
-          label: '当日新增客户数',
-          content: '50人',
-        },
-      ],
+      data: {
+        customerTotalNum: 0,
+        increaseNum: 0,
+        lostNum: 0,
+      },
+      date: moment().format('yyyy-MM-DD'),
+      loading: true,
     };
+  },
+  computed: {
+    tableData() {
+      return [
+        { label: '当日客户数', content: `${this.data.customerTotalNum}人` },
+        { label: '当日流失客户数', content: `${this.data.lostNum}人` },
+        { label: '当日新增客户数', content: `${this.data.increaseNum}人` },
+      ];
+    },
   },
   created() {
     this.$request({
       url: '/api/coustomer/statistics/today/statistics',
     }).then((data) => {
-      console.log(data);
-    }).catch(() => {});
+      this.data.customerTotalNum = data.customerTotalNum;
+      this.data.increaseNum = data.increaseNum;
+      this.data.lostNum = data.lostNum;
+      this.loading = false;
+    }).catch(() => {
+      this.loading = false;
+    });
   },
 };
 </script>
