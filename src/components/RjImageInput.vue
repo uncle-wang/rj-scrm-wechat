@@ -1,7 +1,7 @@
 <template>
   <div class="rj-image-input">
     <div class="rj-image-box" @click="chooseImage">
-      <div v-if="value" class="rj-image-img" :style="{backgroundImage:`url(${value})`}"></div>
+      <div v-if="imageUrl" class="rj-image-img" :style="{backgroundImage:`url(${imageUrl})`}"></div>
       <div v-else class="rj-image-empty">
         <i class="el-icon-plus"></i>
       </div>
@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { FILETYPE } from '@/constants';
+import { uploadFile, uploadMedia, getMediaUrl } from '@/api/common';
 import chooseImage from '@/utils/chooseImage';
 
 export default {
@@ -17,14 +19,36 @@ export default {
   props: {
     value: {
       type: String,
-      required: true,
+      required: false,
+    },
+    // 是否是素材类型(素材和非素材调用的上传接口不一样，素材返回mediaId，非素材返回文件url)
+    media: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
   },
   methods: {
     chooseImage() {
       chooseImage((file) => {
-        this.$emit('input', window.URL.createObjectURL(file));
+        if (this.media) {
+          uploadMedia(FILETYPE.IMAGE, file).then((res) => {
+            this.$emit('input', res.mediaId);
+          });
+        } else {
+          uploadFile(FILETYPE.IMAGE, file).then((res) => {
+            this.$emit('input', res.fileUrl);
+          });
+        }
       });
+    },
+  },
+  computed: {
+    imageUrl() {
+      if (this.value && this.media) {
+        return getMediaUrl(this.value);
+      }
+      return this.value;
     },
   },
 };

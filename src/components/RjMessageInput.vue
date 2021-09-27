@@ -17,32 +17,32 @@
         <div v-for="(item,index) in value" :key="index"  class="msg-item">
           <div class="msg-item-preview">
             <!-- 文字 -->
-            <div v-if="item.msgtype===MSGTYPE.TEXT" class="msg-text ellipsis">
-              {{item.text.content}}
+            <div v-if="item.extType===MSGTYPE.TEXT" class="msg-text ellipsis">
+              {{item.textContent}}
             </div>
             <!-- 链接 -->
-            <div v-else-if="item.msgtype===MSGTYPE.LINK" class="msg-link">
+            <div v-else-if="item.extType===MSGTYPE.LINK" class="msg-link">
               <el-link
                 class="ellipsis"
                 type="primary"
-                :href="item.link.url"
+                :href="item.linkUrl"
                 :underline="false"
                 target="_blank"
               >
-                {{item.link.title}}
+                {{item.linkTitle}}
               </el-link>
             </div>
             <!-- 小程序 -->
-            <div v-else-if="item.msgtype===MSGTYPE.MINIPROGRAM" class="msg-text ellipsis">
-              [小程序]{{item.miniprogram.title}}
+            <div v-else-if="item.extType===MSGTYPE.MINIPROGRAM" class="msg-text ellipsis">
+              [小程序]{{item.miniTitle}}
             </div>
             <!-- 图片 -->
-            <div v-else-if="item.msgtype===MSGTYPE.IMAGE" class="msg-text ellipsis">
-              [图片]{{item.image.name}}
+            <div v-else-if="item.extType===MSGTYPE.IMAGE" class="msg-text ellipsis">
+              [图片]{{item.imageMediaId}}
             </div>
             <!-- 文件 -->
             <div v-else class="msg-text ellipsis">
-              [文件]{{item.file.name}}
+              [文件]{{item.fileMediaId}}
             </div>
           </div>
           <el-button
@@ -106,19 +106,19 @@
         ref="textForm"
         @submit.native.prevent="addText"
       >
-        <el-form-item label="文字" prop="content">
+        <el-form-item label="文字" prop="textContent">
           <el-input
             class="text-input"
             type="textarea"
             resize="none"
             placeholder="请输入内容"
-            v-model="textForm.content"
+            v-model="textForm.textContent"
             autofocus
           />
         </el-form-item>
         <el-form-item class="form-btns">
-          <el-button size="small" @click="textFormShow=false">取消</el-button>
-          <el-button size="small" type="primary" native-type="submit">确定</el-button>
+          <el-button @click="textFormShow=false">取消</el-button>
+          <el-button type="primary" native-type="submit">确定</el-button>
         </el-form-item>
       </el-form>
     </rj-dialog>
@@ -136,32 +136,32 @@
         ref="linkForm"
         @submit.native.prevent="addLink"
       >
-        <el-form-item label="消息标题" prop="title">
+        <el-form-item label="消息标题" prop="linkTitle">
           <el-input
             class="link-title"
             placeholder="请输入标题"
-            v-model="linkForm.title"
+            v-model="linkForm.linkTitle"
             autofocus
           />
         </el-form-item>
-        <el-form-item label="消息链接" prop="url">
+        <el-form-item label="消息链接" prop="linkUrl">
           <el-input
             placeholder="请输入链接"
-            v-model="linkForm.url"
+            v-model="linkForm.linkUrl"
           />
         </el-form-item>
-        <el-form-item label="消息描述" prop="desc">
+        <el-form-item label="消息描述" prop="linkDesc">
           <el-input
             placeholder="请输入描述"
-            v-model="linkForm.desc"
+            v-model="linkForm.linkDesc"
           />
         </el-form-item>
-        <el-form-item label="消息封面" prop="picurl">
-          <rj-image-input v-model="linkForm.picurl"></rj-image-input>
+        <el-form-item label="消息封面" prop="linkPicurl">
+          <rj-image-input v-model="linkForm.linkPicurl"></rj-image-input>
         </el-form-item>
         <el-form-item class="form-btns">
-          <el-button size="small" @click="linkFormShow=false">取消</el-button>
-          <el-button size="small" type="primary" native-type="submit">确定</el-button>
+          <el-button @click="linkFormShow=false">取消</el-button>
+          <el-button type="primary" native-type="submit">确定</el-button>
         </el-form-item>
       </el-form>
     </rj-dialog>
@@ -179,34 +179,34 @@
         ref="miniappForm"
         @submit.native.prevent="addMiniapp"
       >
-        <el-form-item label="小程序标题" prop="title" required>
+        <el-form-item label="小程序标题" prop="miniTitle" required>
           <el-input
             class="miniapp-input"
             placeholder="请输入"
-            v-model="miniappForm.title"
+            v-model="miniappForm.miniTitle"
             autofocus
           />
         </el-form-item>
-        <el-form-item label="小程序appid" prop="appid" required>
+        <el-form-item label="小程序appid" prop="miniAppid" required>
           <el-input
             class="miniapp-input"
             placeholder="请输入"
-            v-model="miniappForm.appid"
+            v-model="miniappForm.miniAppid"
           />
         </el-form-item>
-        <el-form-item label="小程序路径" prop="page" required>
+        <el-form-item label="小程序路径" prop="miniPage" required>
           <el-input
             class="miniapp-input"
             placeholder="请输入"
-            v-model="miniappForm.page"
+            v-model="miniappForm.miniPage"
           />
         </el-form-item>
-        <el-form-item label="小程序封面" prop="pic_url" required>
-          <rj-image-input v-model="miniappForm.pic_url" @input="checkImage"></rj-image-input>
+        <el-form-item label="小程序封面" prop="miniPicMediaId" required>
+          <rj-image-input media v-model="miniappForm.miniPicMediaId" @input="checkImage" />
         </el-form-item>
         <el-form-item class="form-btns">
-          <el-button size="small" @click="miniappFormShow=false">取消</el-button>
-          <el-button size="small" type="primary" native-type="submit">确定</el-button>
+          <el-button @click="miniappFormShow=false">取消</el-button>
+          <el-button type="primary" native-type="submit">确定</el-button>
         </el-form-item>
       </el-form>
     </rj-dialog>
@@ -214,12 +214,15 @@
 </template>
 
 <script>
-import { MSGTYPE } from '@/constants';
+import { MSGTYPE, FILETYPE } from '@/constants';
+import RjImageInput from '@/components/RjImageInput.vue';
 import chooseFile from '@/utils/chooseFile';
 import chooseImage from '@/utils/chooseImage';
+import { uploadMedia } from '@/api/common';
 
 export default {
   name: 'RjMessageInput',
+  components: { RjImageInput },
   props: {
     value: {
       type: Array,
@@ -244,47 +247,47 @@ export default {
       MSGTYPE,
       textFormShow: false,
       textForm: {
-        content: '',
+        textContent: '',
       },
       textRules: {
-        content: [{ required: true, message: '请输入内容' }],
+        textContent: [{ required: true, message: '请输入内容' }],
       },
       linkFormShow: false,
       linkForm: {
-        title: '',
-        picurl: '',
-        desc: '',
-        url: '',
+        linkTitle: '',
+        linkPicurl: '',
+        linkDesc: '',
+        linkUrl: '',
       },
       linkRules: {
-        title: [
+        linkTitle: [
           { required: true, message: '请输入标题' },
         ],
-        url: [
+        linkUrl: [
           { required: true, message: '请输入链接' },
           { type: 'url', message: '请输入正确的格式' },
         ],
       },
       miniappFormShow: false,
       miniappForm: {
-        title: '',
-        appid: '',
-        page: '',
-        pic_url: '',
+        miniTitle: '',
+        miniAppid: '',
+        miniPage: '',
+        miniPicMediaId: '',
       },
       miniappRules: {
-        title: [{ required: true, message: '请输入标题' }],
-        appid: [{ required: true, message: '请输入小程序appid' }],
-        page: [{ required: true, message: '请输入小程序路径' }],
-        pic_url: [{ required: true, message: '请添加小程序封面' }],
+        miniTitle: [{ required: true, message: '请输入标题' }],
+        miniAppid: [{ required: true, message: '请输入小程序appid' }],
+        miniPage: [{ required: true, message: '请输入小程序路径' }],
+        miniPicMediaId: [{ required: true, message: '请添加小程序封面' }],
       },
     };
   },
   computed: {
     singleTextValue() {
       const firstItem = this.value[0];
-      if (firstItem && firstItem.msgtype === MSGTYPE.TEXT) {
-        return firstItem.text.content;
+      if (firstItem && firstItem.extType === MSGTYPE.TEXT) {
+        return firstItem.textContent;
       }
       return '';
     },
@@ -292,20 +295,20 @@ export default {
   methods: {
     emitSingleText(v) {
       const [firstItem, ...others] = this.value;
-      if (firstItem && firstItem.msgtype === MSGTYPE.TEXT) {
+      if (firstItem && firstItem.extType === MSGTYPE.TEXT) {
         this.$emit('input', v ? [
-          { msgtype: MSGTYPE.TEXT, text: { content: v } },
+          { extType: MSGTYPE.TEXT, textContent: v },
           ...others,
         ] : [...others]);
       } else {
         this.$emit('input', v ? [
-          { msgtype: MSGTYPE.TEXT, text: { content: v } },
+          { extType: MSGTYPE.TEXT, textContent: v },
           ...this.value,
         ] : [...this.value]);
       }
     },
     showTextForm() {
-      this.textForm.content = '';
+      this.textForm.textContent = '';
       if (this.$refs.textForm) {
         this.$refs.textForm.clearValidate();
       }
@@ -319,15 +322,15 @@ export default {
         if (!valid) {
           return;
         }
-        this.$emit('input', [...this.value, { msgtype: MSGTYPE.TEXT, text: { ...this.textForm } }]);
+        this.$emit('input', [...this.value, { extType: MSGTYPE.TEXT, ...this.textForm }]);
         this.textFormShow = false;
       });
     },
     showLinkForm() {
-      this.linkForm.title = '';
-      this.linkForm.picurl = '';
-      this.linkForm.desc = '';
-      this.linkForm.url = '';
+      this.linkForm.linkTitle = '';
+      this.linkForm.linkPicurl = '';
+      this.linkForm.linkDesc = '';
+      this.linkForm.linkUrl = '';
       if (this.$refs.linkForm) {
         this.$refs.linkForm.clearValidate();
       }
@@ -341,15 +344,15 @@ export default {
         if (!valid) {
           return;
         }
-        this.$emit('input', [...this.value, { msgtype: MSGTYPE.LINK, link: { ...this.linkForm } }]);
+        this.$emit('input', [...this.value, { extType: MSGTYPE.LINK, ...this.linkForm }]);
         this.linkFormShow = false;
       });
     },
     showMiniappForm() {
-      this.miniappForm.title = '';
-      this.miniappForm.appid = '';
-      this.miniappForm.page = '';
-      this.miniappForm.pic_url = '';
+      this.miniappForm.miniTitle = '';
+      this.miniappForm.miniAppid = '';
+      this.miniappForm.miniPage = '';
+      this.miniappForm.miniPicMediaId = '';
       if (this.$refs.miniappForm) {
         this.$refs.miniappForm.clearValidate();
       }
@@ -366,30 +369,34 @@ export default {
         this.$emit('input', [
           ...this.value,
           {
-            msgtype: MSGTYPE.MINIPROGRAM,
-            miniprogram: { ...this.miniappForm },
+            extType: MSGTYPE.MINIPROGRAM,
+            ...this.miniappForm,
           },
         ]);
         this.miniappFormShow = false;
       });
     },
     checkImage() {
-      this.$refs.miniappForm.validateField('pic_url');
+      this.$refs.miniappForm.validateField('miniPicMediaId');
     },
     selectImage() {
       chooseImage((file) => {
-        this.$emit('input', [...this.value, {
-          msgtype: MSGTYPE.IMAGE,
-          image: { name: file.name, pic_url: window.URL.createObjectURL(file) },
-        }]);
+        uploadMedia(FILETYPE.IMAGE, file).then((res) => {
+          this.$emit('input', [...this.value, {
+            extType: MSGTYPE.IMAGE,
+            imageMediaId: res.mediaId,
+          }]);
+        }).catch(() => {});
       });
     },
     selectFile() {
       chooseFile((file) => {
-        this.$emit('input', [...this.value, {
-          msgtype: MSGTYPE.FILE,
-          file: { name: file.name, url: window.URL.createObjectURL(file) },
-        }]);
+        uploadMedia(FILETYPE.FILE, file).then((res) => {
+          this.$emit('input', [...this.value, {
+            extType: MSGTYPE.FILE,
+            fileMediaId: res.mediaId,
+          }]);
+        }).catch(() => {});
       });
     },
     removeItem(item) {
@@ -470,7 +477,8 @@ export default {
   }
 }
 .el-form {
-  padding: 0 16px;
+  width: 300px;
+  padding: 28px 32px 18px;
 }
 .el-form-item + .el-form-item {
   margin-top: 18px;

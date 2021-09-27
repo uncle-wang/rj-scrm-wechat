@@ -9,26 +9,26 @@
           </div>
           <div class="message-content">
             <!-- 文字 -->
-            <div v-if="item.msgtype===MSGTYPE.TEXT" class="message-text">
-              {{item.text.content}}
+            <div v-if="item.extType===MSGTYPE.TEXT" class="message-text">
+              {{item.textContent}}
             </div>
             <!-- 链接 -->
-            <div v-else-if="item.msgtype===MSGTYPE.LINK" class="message-text">
-              <el-link type="primary" :href="item.link.url" :underline="false" target="_blank">
-                {{item.link.title}}
+            <div v-else-if="item.extType===MSGTYPE.LINK" class="message-text">
+              <el-link type="primary" :href="item.linkUrl" :underline="false" target="_blank">
+                {{item.linkTitle}}
               </el-link>
             </div>
             <!-- 图片 -->
-            <div v-else-if="item.msgtype===MSGTYPE.IMAGE" class="message-image">
-              <img class="image" :src="item.image.pic_url">
+            <div v-else-if="item.extType===MSGTYPE.IMAGE" class="message-image">
+              <img class="image" :src="getMediaUrl(item.imageMediaId)">
             </div>
             <!-- 小程序 -->
-            <div v-else-if="item.msgtype===MSGTYPE.MINIPROGRAM" class="message-text">
-              [小程序]{{item.miniprogram.title}}
+            <div v-else-if="item.extType===MSGTYPE.MINIPROGRAM" class="message-text">
+              [小程序]{{item.miniTitle}}
             </div>
             <!-- 其他文件 -->
             <div v-else class="message-text">
-              [文件]{{item.file.name}}
+              [文件]{{item.fileMediaId}}
             </div>
           </div>
         </div>
@@ -39,6 +39,7 @@
 
 <script>
 import { MSGTYPE } from '@/constants';
+import { getMediaUrl } from '@/api/common';
 
 export default {
   name: 'RjMessagePreview',
@@ -55,6 +56,9 @@ export default {
   },
   data() {
     return { MSGTYPE };
+  },
+  methods: {
+    getMediaUrl,
   },
 };
 </script>

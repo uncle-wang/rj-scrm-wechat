@@ -7,11 +7,16 @@ export const WECHATPAGE = {
 };
 
 export const MSGTYPE = {
-  TEXT: 'text',
-  LINK: 'link',
+  TEXT: 0,
+  LINK: 2,
+  IMAGE: 1,
+  FILE: 7,
+  MINIPROGRAM: 3,
+};
+
+export const FILETYPE = {
   IMAGE: 'image',
   FILE: 'file',
-  MINIPROGRAM: 'miniprogram',
 };
 
 export const WORDSTYPE = {
