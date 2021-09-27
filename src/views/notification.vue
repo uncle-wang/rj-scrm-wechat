@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import getParam from '@/utils/getParam';
+
 export default {
   data() {
     return {
@@ -74,6 +76,17 @@ export default {
         console.error(err);
       });
     },
+  },
+  created() {
+    const taskId = getParam('task_id');
+    if (taskId) {
+      this.$request({
+        method: 'POST',
+        url: `/api/task/info/${taskId}`
+      }).then((data) => {
+        console.log(data);
+      }).catch(() => {});
+    }
   },
 };
 </script>

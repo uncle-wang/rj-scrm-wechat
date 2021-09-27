@@ -123,7 +123,7 @@ export default {
     },
     getWords() {
       return this.$request({
-        url: '/verbal/trick/team/list'
+        url: '/verbal/trick/group/tree'
       });
     },
   },

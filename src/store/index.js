@@ -6,10 +6,14 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     entry: null,
+    token: null,
   },
   mutations: {
     setEntry(state, entry) {
       state.entry = entry;
+    },
+    setToken(state, token) {
+      state.token = token;
     },
   },
 });
