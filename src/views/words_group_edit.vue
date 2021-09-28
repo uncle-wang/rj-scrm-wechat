@@ -5,13 +5,14 @@
       <el-form
         :model="form"
         :rules="rules"
+        v-loading="loading"
         ref="form"
         size="small"
         label-width="112px"
         @submit.prevent.native="submit"
       >
-        <el-form-item label="话术分组名称" prop="title">
-          <el-input placeholder="请输入" v-model="form.title" autofocus></el-input>
+        <el-form-item label="话术分组名称" prop="groupName">
+          <el-input placeholder="请输入" v-model="form.groupName" autofocus></el-input>
         </el-form-item>
         <el-form-item class="form-btns" label-width="0">
           <el-button size="mini" @click="$router.back()">取消</el-button>
@@ -23,16 +24,18 @@
 </template>
 
 <script>
+import { WORDSTYPE } from '@/constants';
+import { createWordsGroup } from '@/api/common';
+
 export default {
   data() {
     return {
+      loading: false,
       form: {
-        group: null,
-        title: null,
-        contents: [],
+        groupName: null,
       },
       rules: {
-        title: [{ required: true, message: '请输入话术分组名称' }],
+        groupName: [{ required: true, message: '请输入话术分组名称' }],
       },
     };
   },
@@ -42,7 +45,13 @@ export default {
         if (!valid) {
           return;
         }
-        console.log('提交');
+        this.loading = true;
+        createWordsGroup(WORDSTYPE.PERSONAL, this.form.groupName).then(() => {
+          this.loading = false;
+          this.$router.back();
+        }).catch(() => {
+          this.loading = false;
+        });
       });
     },
   },

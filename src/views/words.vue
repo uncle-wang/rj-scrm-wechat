@@ -28,15 +28,19 @@
       </el-form>
       <el-tree
         ref="tree"
-        node-key="id"
-        icon-class="el-icon-s-unfold"
+        lazy
+        :load="loadWords"
         :data="wordsGroups"
         :filter-node-method="filterNode"
+        :props="{label:'name',isLeaf:isWords}"
         v-loading="loading"
       >
-        <div class="custom-tree-node" slot-scope="{ node, data }">
-          <span>{{node.label}}</span>
-          <el-button v-if="!data.children" type="primary" plain @click="sendMessage(data)">发送</el-button>
+        <div class="custom-tree-node" slot-scope="{ data }">
+          <div v-if="data.leaf" class="words-row">
+            <span>{{data.title}}</span>
+            <el-button type="primary" plain>发送</el-button>
+          </div>
+          <div v-else>{{data.name}}</div>
         </div>
       </el-tree>
       <div class="group-btn" v-if="type===WORDSTYPE.PERSONAL">
@@ -48,6 +52,7 @@
 
 <script>
 import { WORDSTYPE } from '@/constants';
+import { getWordsTree, getWordsByGroup } from '@/api/common';
 
 export default {
   props: {
@@ -61,48 +66,7 @@ export default {
       WORDSTYPE,
       loading: false,
       searchForm: { keywords: '' },
-      wordsGroups: [
-        {
-          id: 1,
-          label: '话术分组1',
-          children: [
-            { id: 2, label: '话术标题2' },
-            { id: 3, label: '话术标题3' },
-            { id: 4, label: '话术标题4' },
-            { id: 5, label: '话术标题5' },
-          ],
-        },
-        {
-          id: 11,
-          label: '话术分组11',
-          children: [
-            { id: 12, label: '话术标题12' },
-            { id: 13, label: '话术标题13' },
-            { id: 14, label: '话术标题14' },
-            { id: 15, label: '话术标题15' },
-          ],
-        },
-        {
-          id: 21,
-          label: '话术分组21',
-          children: [
-            { id: 22, label: '话术标题22' },
-            { id: 23, label: '话术标题23' },
-            { id: 24, label: '话术标题24' },
-            { id: 25, label: '话术标题25' },
-          ],
-        },
-        {
-          id: 31,
-          label: '话术分组31',
-          children: [
-            { id: 32, label: '话术标题32' },
-            { id: 33, label: '话术标题33' },
-            { id: 34, label: '话术标题34' },
-            { id: 35, label: '话术标题35' },
-          ],
-        },
-      ],
+      wordsGroups: [],
     };
   },
   methods: {
@@ -111,31 +75,52 @@ export default {
         this.$router.replace(`words_${type}`);
       }
     },
+    getTree() {
+      this.loading = true;
+      getWordsTree(this.type).then((data) => {
+        this.wordsGroups = data;
+        this.loading = false;
+      }).catch((err) => {
+        console.log(err);
+        this.wordsGroups = [];
+        this.loading = false;
+      });
+    },
+    loadWords(node, resolve) {
+      if (!node.data.id) return;
+      const list = node.data.children || [];
+      getWordsByGroup(this.type, node.data.id).then((data) => {
+        const words = data.list.map((item) => ({
+          ...item,
+          leaf: true,
+        }));
+        list.push(...words);
+        resolve(list);
+      }).catch(() => {
+        resolve(list);
+      });
+    },
+    isWords(data) {
+      return Boolean(data.leaf);
+    },
     search() {
       this.$refs.tree.filter(this.searchForm.keywords);
     },
     filterNode(value, data) {
       if (!value) return true;
-      return data.label.indexOf(value) !== -1;
+      return data.name.indexOf(value) !== -1;
     },
     sendMessage(data) {
       console.log(data);
     },
-    getWords() {
-      return this.$request({
-        url: '/verbal/trick/group/tree'
-      });
-    },
   },
   created() {
-    this.loading = true;
-    this.getWords().then((data) => {
-      this.loading = false;
-      console.log(data);
-    }).catch((err) => {
-      this.loading = false;
-      console.error(err);
-    });
+    this.getTree();
+  },
+  watch: {
+    $route() {
+      this.getTree();
+    },
   },
 };
 </script>
@@ -175,9 +160,12 @@ export default {
 }
 .custom-tree-node {
   flex: 1;
+}
+.words-row {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 0 7px;
   .el-button {
     padding: 0;
     width: 42px;

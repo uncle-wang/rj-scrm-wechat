@@ -38,6 +38,52 @@ export function getTaskRule(taskId) {
   });
 }
 
+// 获取话术组tree
+export function getWordsTree(bizType) {
+  return request({
+    url: '/verbal/trick/group/tree',
+    params: { bizType },
+  });
+}
+
+// 根据话术组查话术
+export function getWordsByGroup(bizType, groupId) {
+  return request({
+    url: '/verbal/trick/team/list',
+    params: { bizType, groupId, page: 1, size: 100 },
+  });
+}
+
+// 查询话术组
+export function getWordsGroups(bizType) {
+  return request({
+    url: '/verbal/trick/group/list',
+    params: { bizType },
+  });
+}
+
+// 创建话术分组
+export function createWordsGroup(bizType, groupName) {
+  return request({
+    method: 'POST',
+    url: '/verbal/trick/group/add',
+    data: {
+      bizType,
+      groupName,
+      pid: 0,
+    },
+  });
+}
+
+// 创建话术集
+export function createWords(data) {
+  return request({
+    method: 'POST',
+    url: '/verbal/trick/team/add',
+    data,
+  });
+}
+
 // 上传文件
 export function uploadFile(fileType, file) {
   const fd = new FormData();

@@ -20,6 +20,6 @@ export const FILETYPE = {
 };
 
 export const WORDSTYPE = {
-  BUSINESS: 'business',
-  PERSONAL: 'personal',
+  BUSINESS: '1',
+  PERSONAL: '2',
 };
