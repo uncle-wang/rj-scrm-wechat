@@ -48,6 +48,7 @@ export default {
         this.loading = true;
         createWordsGroup(WORDSTYPE.PERSONAL, this.form.groupName).then(() => {
           this.loading = false;
+          this.$message.success('操作成功');
           this.$router.back();
         }).catch(() => {
           this.loading = false;

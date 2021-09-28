@@ -15,9 +15,11 @@ import {
   TabPane,
   Tree,
   Loading,
+  Message,
 } from 'element-ui';
 
 Vue.prototype.$ELEMENT = { size: 'mini' };
+Vue.prototype.$message = Message;
 Vue.use(Button);
 Vue.use(Input);
 Vue.use(Select);
