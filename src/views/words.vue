@@ -38,7 +38,7 @@
         <div class="custom-tree-node" slot-scope="{ data }">
           <div v-if="data.leaf" class="words-row">
             <span>{{data.title}}</span>
-            <el-button type="primary" plain>发送</el-button>
+            <el-button type="primary" plain @click="sendMessage(data)">发送</el-button>
           </div>
           <div v-else>{{data.name}}</div>
         </div>
@@ -51,7 +51,8 @@
 </template>
 
 <script>
-import { WORDSTYPE } from '@/constants';
+import sendChatMessage from '@/utils/sendChatMessage';
+import { MSGTYPE, WORDSTYPE } from '@/constants';
 import { getWordsTree, getWordsByGroup } from '@/api/common';
 
 export default {
@@ -111,7 +112,12 @@ export default {
       return data.name.indexOf(value) !== -1;
     },
     sendMessage(data) {
-      console.log(data);
+      data.list.forEach((item) => {
+        sendChatMessage(item).catch((err) => {
+          console.log(err);
+        });
+        sendChatMessage({ extType: MSGTYPE.TEXT, textContent: '\n' });
+      });
     },
   },
   created() {
