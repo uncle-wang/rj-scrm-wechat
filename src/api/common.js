@@ -84,6 +84,13 @@ export function createWords(data) {
   });
 }
 
+// 获取欢迎语列表
+export function getWelcomeList() {
+  return request({
+    url: '/api/welcome/list',
+  });
+}
+
 // 上传文件
 export function uploadFile(fileType, file) {
   const fd = new FormData();

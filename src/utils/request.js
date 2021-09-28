@@ -20,15 +20,12 @@ axios.interceptors.request.use(function(config) {
 });
 
 axios.interceptors.response.use(function(response) {
-	if (response.request.responseURL.indexOf('/api/') > -1) {
-		if (response.data.status === 1) {
-			return response.data.data;
-		}
-    console.error(response);
-    Message.error(response.data.msg);
-		return Promise.reject(response.data);
-	}
-  return response.data;
+  if (response.data.status === 1) {
+    return response.data.data;
+  }
+  console.error(response);
+  Message.error(response.data.msg);
+  return Promise.reject(response.data);
 }, function(error) {
   console.error(error);
   Message.error(error.message);

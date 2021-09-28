@@ -11,36 +11,16 @@
 </template>
 
 <script>
+import { getWelcomeList } from '@/api/common';
+
 export default {
   data() {
     return {
-      contents: [
-        {
-          msgtype: 'text',
-          text: { content: '客户您好' },
-        },
-        {
-          msgtype: 'image',
-          image: { pic_url: 'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview_jpg/19367cbcf3b03cc253455b4208074d76.jpg' },
-        },
-        {
-          msgtype: 'link',
-          link: { title: '点击查看详情', url: 'https://www.baidu.com' },
-        },
-        {
-          msgtype: 'file',
-          file: { name: '工程规划.pdf' },
-        },
-        {
-          msgtype: 'miniprogram',
-          miniprogram: { title: '腾讯云助手' },
-        },
-        {
-          msgtype: 'image',
-          image: { pic_url: 'https://img0.baidu.com/it/u=3237371273,3131709842&fm=26&fmt=auto&gp=0.jpg' },
-        },
-      ],
+      contents: [],
     };
+  },
+  created() {
+    getWelcomeList();
   },
 };
 </script>
