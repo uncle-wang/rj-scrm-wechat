@@ -12,10 +12,7 @@ export default () => new Promise((resolve, reject) => {
   getSign().then((data) => {
     const {
       noncestr,
-      // jsapi_ticket,
-      // jsapi_ticket_crop,
       timestamp,
-      // url,
       signature,
       signatureCrop,
     } = data;
@@ -28,10 +25,7 @@ export default () => new Promise((resolve, reject) => {
       signature: signatureCrop,
       jsApiList: APILIST,
     });
-    wx.error(() => {
-      console.log('config1 failed');
-      reject();
-    });
+    wx.error(reject);
     wx.ready(() => {
       wx.agentConfig({
         corpid: WECHATID,
