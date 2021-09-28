@@ -17,57 +17,72 @@
 
 <script>
 import { MSGTYPE } from '@/constants';
+import { getTasksByUser } from '@/api/common';
+import sendChatMessage from '@/utils/sendChatMessage';
 
 export default {
   data() {
     return {
-      contents: [
-        {
-          msgtype: 'text',
-          text: { content: '客户您好' },
-        },
-        {
-          msgtype: 'image',
-          image: { pic_url: 'https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview_jpg/19367cbcf3b03cc253455b4208074d76.jpg' },
-        },
-        {
-          msgtype: 'text',
-          text: { content: '客户您好2' },
-        },
-        {
-          msgtype: 'link',
-          link: { title: '点击查看详情', url: 'https://www.baidu.com' },
-        },
-        {
-          msgtype: 'file',
-          file: { name: '工程规划.pdf' },
-        },
-        {
-          msgtype: 'miniprogram',
-          miniprogram: {
-            appid: 'wx8bd80126147df384',
-            title: '腾讯云助手',
-            imgUrl: 'https://search-operate.cdn.bcebos.com/d054b8892a7ab572cb296d62ec7f97b6.png',
-            page: '/index/page.html',
-          },
-        },
-        {
-          msgtype: 'image',
-          image: { pic_url: 'https://img0.baidu.com/it/u=3237371273,3131709842&fm=26&fmt=auto&gp=0.jpg' },
-        },
-      ],
+      tasks: [],
     };
   },
   methods: {
     sendMessage() {
-      this.contents.filter((item) => item.msgtype === MSGTYPE.TEXT).forEach((item) => {
-        this.$wxInvoke('sendChatMessage', { ...item, text: { content: item.text.content + '\n' } }).then(() => {
-          console.log('send ok');
-        }).catch((err) => {
-          console.error(err);
-        });
-      });
+      sendChatMessage(this.contents);
     },
+  },
+  computed: {
+    contents() {
+      if (this.tasks.length <= 0) return [];
+      const taskInfo = this.tasks[0];
+      const contents = [];
+      // 文本
+      if (taskInfo.textContent) {
+        contents.push({ extType: MSGTYPE.TEXT, textContent: taskInfo.textContent });
+      }
+      // 图片
+      if (taskInfo.imageMediaId) {
+        contents.push({ extType: MSGTYPE.IMAGE, imageMediaId: taskInfo.imageMediaId });
+      }
+      // 链接
+      if (taskInfo.linkUrl && taskInfo.linkTitle) {
+        contents.push({
+          extType: MSGTYPE.LINK,
+          linkUrl: taskInfo.linkUrl,
+          linkTitle: taskInfo.linkTitle,
+          linkDesc: taskInfo.linkDesc,
+          linkPicurl: taskInfo.linkPicurl,
+        });
+      }
+      // 文件
+      if (taskInfo.fileMediaId) {
+        contents.push({ extType: MSGTYPE.FILE, fileMediaId: taskInfo.fileMediaId });
+      }
+      // 小程序
+      if (taskInfo.miniAppid && taskInfo.miniTitle && taskInfo.miniPage && taskInfo.miniPicMediaId) {
+        contents.push({
+          extType: MSGTYPE.MINIPROGRAM,
+          miniAppid: taskInfo.miniAppid,
+          miniTitle: taskInfo.miniTitle,
+          miniPage: taskInfo.miniPage,
+          miniPicMediaId: taskInfo.miniPicMediaId,
+        });
+      }
+      return contents;
+    },
+  },
+  created() {
+    this.$wxInvoke('getCurExternalContact').then((res) => {
+      const loading = this.$loading();
+      getTasksByUser(res.userId).then((data) => {
+        this.tasks = data;
+        loading.close();
+      }).catch(() => {
+        loading.close();
+      });
+    }).catch((err) => {
+      console.error(err);
+    });
   },
 };
 </script>

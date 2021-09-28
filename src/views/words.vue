@@ -52,7 +52,7 @@
 
 <script>
 import sendChatMessage from '@/utils/sendChatMessage';
-import { MSGTYPE, WORDSTYPE } from '@/constants';
+import { WORDSTYPE } from '@/constants';
 import { getWordsTree, getWordsByGroup } from '@/api/common';
 
 export default {
@@ -112,12 +112,7 @@ export default {
       return data.name.indexOf(value) !== -1;
     },
     sendMessage(data) {
-      data.list.forEach((item) => {
-        sendChatMessage(item).catch((err) => {
-          console.log(err);
-        });
-        sendChatMessage({ extType: MSGTYPE.TEXT, textContent: '\n' });
-      });
+      sendChatMessage(data.list);
     },
   },
   created() {

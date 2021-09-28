@@ -91,6 +91,14 @@ export function getWelcomeList() {
   });
 }
 
+// 查询目标客户的推送任务
+export function getTasksByUser(userId) {
+  return request({
+    method: 'POST',
+    url: `/api/task/details/${userId}`,
+  });
+}
+
 // 上传文件
 export function uploadFile(fileType, file) {
   const fd = new FormData();

@@ -5,6 +5,7 @@ const WECHATID = process.env.VUE_APP_WECHATID;
 const AGENTID = process.env.VUE_APP_AGENTID
 const APILIST = [
   'getContext',
+  'getCurExternalContact',
   'sendChatMessage',
 ];
 
