@@ -2,10 +2,17 @@ import request from '@/utils/request';
 
 // 获取token
 export function login(code) {
-  // 获取token
   return request({
     url: '/auth/h5/login/oauth/userinfo',
     params: { code },
+  });
+}
+
+// 获取签名信息
+export function getSign() {
+  return request({
+    url: '/auth/h5/wechat/config/sign',
+    params: { url: window.location.origin + window.location.pathname + window.location.search },
   });
 }
 

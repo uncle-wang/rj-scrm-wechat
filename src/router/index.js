@@ -10,7 +10,7 @@ import welcome from '@/views/welcome.vue';
 import welcome_edit from '@/views/welcome_edit.vue';
 import data from '@/views/data.vue';
 import { WORDSTYPE } from '@/constants';
-// import initWx from './initWx';
+import initWx from './initWx';
 
 Vue.use(VueRouter);
 
@@ -73,6 +73,6 @@ const router = new VueRouter({
   },
 });
 
-// router.beforeEach(initWx);
+router.beforeEach(initWx);
 
 export default router;
