@@ -476,10 +476,6 @@ export default {
     margin-left: 0;
   }
 }
-.el-form {
-  width: 300px;
-  padding: 28px 32px 18px;
-}
 .el-form-item + .el-form-item {
   margin-top: 18px;
 }

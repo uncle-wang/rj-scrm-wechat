@@ -19,7 +19,7 @@
         <el-form-item label="标题:" prop="title">
           <el-input placeholder="请输入" v-model="form.title"></el-input>
         </el-form-item>
-        <el-form-item label="话术内容:" prop="contents">
+        <el-form-item label="话术内容:" prop="list">
           <rj-message-input :single-text="false" v-model="form.list" @input="checkMessage" />
         </el-form-item>
         <el-form-item label-width="0" class="form-btns">
@@ -40,6 +40,7 @@ export default {
       loading: false,
       groups: [],
       form: {
+        bizType: WORDSTYPE.PERSONAL,
         groupId: null,
         title: null,
         list: [],
