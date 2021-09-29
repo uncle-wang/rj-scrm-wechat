@@ -7,14 +7,15 @@
         :rules="rules"
         ref="form"
         size="small"
+        v-loading="loading"
         @submit.prevent.native="submit"
       >
-        <el-form-item prop="contents">
-          <rj-message-input v-model="form.contents" @input="checkMessage" placeholder="请输入欢迎语内容" />
+        <el-form-item prop="welcomeReqVoList">
+          <rj-message-input v-model="form.welcomeReqVoList" @input="checkMessage" placeholder="请输入欢迎语内容" />
         </el-form-item>
         <el-form-item label-width="0" class="form-btns">
           <el-button size="mini" @click="$router.back()">取消</el-button>
-          <el-button size="mini" type="primary" native-type="submit">确认</el-button>
+          <el-button size="mini" type="primary" native-type="submit">保存</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -22,16 +23,21 @@
 </template>
 
 <script>
+import { getWelcomeList, addWelcome, editWelcome } from '@/api/common';
+
 export default {
   data() {
     return {
+      // 0-新建 1-编辑
+      type: 0,
+      loading: true,
       form: {
-        contents: [],
+        welcomeReqVoList: [],
       },
       rules: {
-        contents: [{ required: true, validator: (rule, value, callback) => {
+        welcomeReqVoList: [{ required: true, validator: (rule, value, callback) => {
           if (value.length <= 0) {
-            callback(new Error('请添加欢迎语内容'));
+            callback(new Error('请添加内容'));
           } else {
             callback();
           }
@@ -41,16 +47,34 @@ export default {
   },
   methods: {
     checkMessage() {
-      this.$refs.form.validateField('contents');
+      this.$refs.form.validateField('welcomeReqVoList');
     },
     submit() {
       this.$refs.form.validate((valid) => {
         if (!valid) {
           return;
         }
-        console.log('提交');
+        this.loading = true;
+        const p = this.type === 0 ? addWelcome(this.form) : editWelcome(this.form);
+        p.then(() => {
+          this.loading = false;
+          this.$router.back();
+        }).catch(() => {
+          this.loading = false;
+        });
       });
     },
+  },
+  created() {
+    getWelcomeList().then((data) => {
+      if (data && data.length > 0) {
+        this.type = 1;
+        this.form.welcomeReqVoList = data;
+      }
+      this.loading = false;
+    }).catch(() => {
+      this.loading = false;
+    });
   },
 };
 </script>

@@ -99,6 +99,24 @@ export function getWelcomeList() {
   });
 }
 
+// 创建欢迎语
+export function addWelcome(data) {
+  return request({
+    method: 'POST',
+    url: '/api/welcome/add',
+    data,
+  });
+}
+
+// 编辑欢迎语
+export function editWelcome(data) {
+  return request({
+    method: 'POST',
+    url: '/api/welcome/edit',
+    data,
+  });
+}
+
 // 查询目标客户的推送任务
 export function getTasksByUser(userId) {
   return request({
