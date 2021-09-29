@@ -16,22 +16,11 @@
       </el-button>
     </rj-header>
     <div class="page-words">
-      <el-form :model="searchForm" @submit.prevent.native="" size="small">
-        <el-form-item prop="keywords">
-          <el-input
-            placeholder="搜索"
-            prefix-icon="el-icon-search"
-            v-model="searchForm.keywords"
-            @input="search"
-          />
-        </el-form-item>
-      </el-form>
       <el-tree
         ref="tree"
         lazy
         :load="loadWords"
         :data="wordsGroups"
-        :filter-node-method="filterNode"
         :props="{label:'name',isLeaf:isWords}"
         v-loading="loading"
       >
@@ -66,7 +55,6 @@ export default {
     return {
       WORDSTYPE,
       loading: false,
-      searchForm: { keywords: '' },
       wordsGroups: [],
     };
   },
@@ -103,13 +91,6 @@ export default {
     },
     isWords(data) {
       return Boolean(data.leaf);
-    },
-    search() {
-      this.$refs.tree.filter(this.searchForm.keywords);
-    },
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.name.indexOf(value) !== -1;
     },
     sendMessage(data) {
       sendChatMessage(data.list);
@@ -155,9 +136,6 @@ export default {
 }
 /deep/ .el-tree-node__expand-icon {
   font-size: 16px;
-}
-.el-form {
-  padding: 0 7px;
 }
 .custom-tree-node {
   flex: 1;
