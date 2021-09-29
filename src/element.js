@@ -15,6 +15,7 @@ import {
   TabPane,
   Tree,
   Loading,
+  Empty,
   Message,
 } from 'element-ui';
 
@@ -35,3 +36,4 @@ Vue.use(Tabs);
 Vue.use(TabPane);
 Vue.use(Tree);
 Vue.use(Loading);
+Vue.use(Empty);

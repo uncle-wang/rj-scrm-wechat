@@ -8,7 +8,7 @@ module.exports = {
     },
   },
   devServer: {
-    host: 'rj-scrm-1258927939.cos-website.ap-shanghai.myqcloud.com',
+    host: 'scrm.client.deansel.com',
     port: 80, // 端口
     https: false,
     proxy: {

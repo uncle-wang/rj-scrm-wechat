@@ -38,6 +38,14 @@ export function getTaskRule(taskId) {
   });
 }
 
+// 更新任务跟进状态
+export function updateTaskStatus(taskId, userId) {
+  return request({
+    method: 'POST',
+    url: `/api/task/info/${taskId}/${userId}`,
+  });
+}
+
 // 获取话术组tree
 export function getWordsTree(bizType) {
   return request({

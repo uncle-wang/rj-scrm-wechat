@@ -1,24 +1,21 @@
 <template>
   <div>
-    <rj-header>
-      <div class="header">
-        <span>【离店问卷推送】信息</span>
-        <span>2021-09-01</span>
-      </div>
-    </rj-header>
-    <div class="page-push">
-      <rj-message-preview title="内容预览" :contents="contents"></rj-message-preview>
+    <el-empty v-if="tasks.length<=0"></el-empty>
+    <div v-for="item in tasks" :key="item.taskId" class="page-push">
+      <rj-message-preview :title="`${item.taskName}`" :contents="item.contents"></rj-message-preview>
       <div class="func-btn">
-        <el-button type="primary" @click="sendMessage">立即推送</el-button>
+        <el-button type="primary" @click="sendMessage(item)" :disabled="item.followed">
+          {{item.followed ? '已推送' : '立即推送'}}
+        </el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { MSGTYPE } from '@/constants';
-import { getTasksByUser } from '@/api/common';
+import { getTasksByUser, updateTaskStatus } from '@/api/common';
 import sendChatMessage from '@/utils/sendChatMessage';
+import formatPushMessage from '@/utils/formatPushMessage';
 
 export default {
   data() {
@@ -27,55 +24,23 @@ export default {
     };
   },
   methods: {
-    sendMessage() {
-      sendChatMessage(this.contents);
-    },
-  },
-  computed: {
-    contents() {
-      if (this.tasks.length <= 0) return [];
-      const taskInfo = this.tasks[0];
-      const contents = [];
-      // 文本
-      if (taskInfo.textContent) {
-        contents.push({ extType: MSGTYPE.TEXT, textContent: taskInfo.textContent });
-      }
-      // 图片
-      if (taskInfo.imageMediaId) {
-        contents.push({ extType: MSGTYPE.IMAGE, imageMediaId: taskInfo.imageMediaId });
-      }
-      // 链接
-      if (taskInfo.linkUrl && taskInfo.linkTitle) {
-        contents.push({
-          extType: MSGTYPE.LINK,
-          linkUrl: taskInfo.linkUrl,
-          linkTitle: taskInfo.linkTitle,
-          linkDesc: taskInfo.linkDesc,
-          linkPicurl: taskInfo.linkPicurl,
-        });
-      }
-      // 文件
-      if (taskInfo.fileMediaId) {
-        contents.push({ extType: MSGTYPE.FILE, fileMediaId: taskInfo.fileMediaId });
-      }
-      // 小程序
-      if (taskInfo.miniAppid && taskInfo.miniTitle && taskInfo.miniPage && taskInfo.miniPicMediaId) {
-        contents.push({
-          extType: MSGTYPE.MINIPROGRAM,
-          miniAppid: taskInfo.miniAppid,
-          miniTitle: taskInfo.miniTitle,
-          miniPage: taskInfo.miniPage,
-          miniPicMediaId: taskInfo.miniPicMediaId,
-        });
-      }
-      return contents;
+    sendMessage(task) {
+      sendChatMessage(task.contents);
+      task.followed = true;
+      updateTaskStatus(task.taskId, task.receiveUserInfo.receiveUserId).catch(() => {});
     },
   },
   created() {
     this.$wxInvoke('getCurExternalContact').then((res) => {
       const loading = this.$loading();
       getTasksByUser(res.userId).then((data) => {
-        this.tasks = data;
+        if (data && data.length > 0) {
+          this.tasks = data.map((item) => ({
+            ...item,
+            followed: false,
+            contents: formatPushMessage(item),
+          }));
+        }
         loading.close();
       }).catch(() => {
         loading.close();
@@ -88,10 +53,6 @@ export default {
 </script>
 
 <style scoped lang="less">
-.header {
-  display: flex;
-  justify-content: space-between;
-}
 .page-push {
   padding: 18px 12px;
 }

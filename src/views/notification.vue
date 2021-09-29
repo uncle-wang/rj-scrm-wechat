@@ -1,7 +1,7 @@
 <template>
   <div class="page-notification">
     <template v-if="tasks.length<=0">
-      <div class="empty">暂无内容</div>
+      <el-empty></el-empty>
     </template>
     <template v-else>
       <rj-card border>
@@ -29,7 +29,7 @@
 
 <script>
 import getParam from '@/utils/getParam';
-import { MSGTYPE } from '@/constants';
+import formatPushMessage from '@/utils/formatPushMessage';
 import { getTaskDetail, getTaskRule } from '@/api/common';
 
 export default {
@@ -54,42 +54,7 @@ export default {
   },
   computed: {
     contents() {
-      if (this.tasks.length <= 0) return [];
-      const taskInfo = this.tasks[0];
-      const contents = [];
-      // 文本
-      if (taskInfo.textContent) {
-        contents.push({ extType: MSGTYPE.TEXT, textContent: taskInfo.textContent });
-      }
-      // 图片
-      if (taskInfo.imageMediaId) {
-        contents.push({ extType: MSGTYPE.IMAGE, imageMediaId: taskInfo.imageMediaId });
-      }
-      // 链接
-      if (taskInfo.linkUrl && taskInfo.linkTitle) {
-        contents.push({
-          extType: MSGTYPE.LINK,
-          linkUrl: taskInfo.linkUrl,
-          linkTitle: taskInfo.linkTitle,
-          linkDesc: taskInfo.linkDesc,
-          linkPicurl: taskInfo.linkPicurl,
-        });
-      }
-      // 文件
-      if (taskInfo.fileMediaId) {
-        contents.push({ extType: MSGTYPE.FILE, fileMediaId: taskInfo.fileMediaId });
-      }
-      // 小程序
-      if (taskInfo.miniAppid && taskInfo.miniTitle && taskInfo.miniPage && taskInfo.miniPicMediaId) {
-        contents.push({
-          extType: MSGTYPE.MINIPROGRAM,
-          miniAppid: taskInfo.miniAppid,
-          miniTitle: taskInfo.miniTitle,
-          miniPage: taskInfo.miniPage,
-          miniPicMediaId: taskInfo.miniPicMediaId,
-        });
-      }
-      return contents;
+      return this.tasks[0] ? formatPushMessage(this.tasks[0]) : [];
     },
     customers() {
       return this.tasks.map((item) => item.receiveUserInfo);
@@ -117,11 +82,6 @@ export default {
   &>*:nth-child(n+2) {
     margin-top: 16px;
   }
-}
-.empty {
-  color: #aeaeae;
-  text-align: center;
-  padding: 160px 0;
 }
 .rj-message-preview {
   width: 300px;
